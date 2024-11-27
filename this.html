@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>this en JavaScritp</title>
+  </head>
+
+  <body>
+    <h1>this en JavaScritp</h1>
+
+    <script>
+
+     /*------ Curso JavaScript: 57. this
+
+      console.log(this);
+      console.log(window);
+      console.log(this === window);
+
+      this.nombre = "Contexto Global";
+      console.log(this.nombre);
+
+      function imprimir() {
+        console.log(this.nombre);
+      }
+
+     imprimir();
+
+     const obj = {
+       nombre: "Contexto Objeto",
+       imprimir: function(){
+         console.log(this.nombre);
+       }
+     }
+
+     obj.imprimir();
+
+     const obj2 = {
+      nombre: "Contexto Objeto 2",
+      imprimir: imprimir //Se asignara funcion imprimir() mostrando alcance del objeto this
+     }
+
+     obj2.imprimir();//Imprimira propiedad nombre dentro de obj2
+
+     const obj3 = {
+      nombre: "Contexto Objeto 3",
+      imprimir: () =>{
+        console.log(this.nombre);
+      }
+     }
+
+     obj3.imprimir();//A qui hay un detalle; La arrow funtion no mantiene su propio scope y lo que hace el contexto de la palabra this en la arrow funtion es agarrarlo del padre del objeto en el que se creo la arrow funtion es por eso que imprime el contexto global
+
+     //Funcion constructora
+     function Persona(nombre){
+       const that = this;
+       that.nombre = nombre;
+     //return console.log(this.nombre);
+     //return function(){
+     // console.log(this.nombre);
+     //}
+     //return () => console.log(this.nombre);
+       return function(){
+         console.log(that.nombre, 33);
+       }
+     }
+
+     let jon = new Persona("Jon");
+
+     jon();*/
+
+     //------ Curso JavaScript: 58. call, apply, bind
+     console.log(this);
+     this.lugar = "Contexto Global";
+
+     function saludar(saludo, aQuienSaludar){
+        console.log(`${saludo} ${aQuienSaludar} desde el ${this.lugar}`);
+     }
+
+     saludar("Que tal", "Jovenes Ilustres");
+
+     const obj = {
+        lugar: "Contexto Objeto"
+     }
+
+     saludar.call(obj,"Hola", "Alfred");
+     saludar.call(null,"Hola", "Alfred");
+     saludar.call(this,"Hola", "Alfred");
+     saludar.apply(obj, ["Buenos Dias","Alfredo Jose"]);
+     saludar.apply(null, ["Buenos Dias","Alfredo Jose"]);
+     saludar.apply(this, ["Buenos Dias","Alfredo Jose"]);
+
+     this.nombre = "Window";
+     const persona = {
+        nombre: "Jhon",
+        saludar: function(){
+            console.log(`Hola ${this.nombre}`);
+        }
+     }
+
+     persona.saludar();
+
+     const otraPersona = {
+        saludar: persona.saludar.bind(this)
+     }
+
+     otraPersona.saludar();
+
+
+
+
+    </script>
+  </body>
+</html>

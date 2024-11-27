@@ -1,0 +1,12 @@
+{
+  "cadena": "Alfred",
+  "numero": 31,
+  "booleano": true,
+  "arreglo": ["correr", "programar", "cocinar"],
+  "objeto": {
+    "twitter": "@A1FRED0J0SE",
+    "email": "alfredojoseacostareyes@gmail.com"
+  },
+  "nulo": null
+}
+

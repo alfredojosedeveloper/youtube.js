@@ -334,7 +334,6 @@ $newCard.classList.add("card");
   //beforeend(ultimo hijo)
   //afterend(hermano siguiente)
 
-  const holamundo = "hola mundo 2";
 const $cards = document.querySelector(".cards"),
   $newCard = document.createElement("figure");
 

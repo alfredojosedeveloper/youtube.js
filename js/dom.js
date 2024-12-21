@@ -54,7 +54,7 @@ console.log(document.querySelectorAll(".card")[2]);
 console.log(document.querySelector("#menu li"));
 console.log(document.querySelectorAll("#menu li"));*/
 
-/* **********     Curso JavaScript: 63. Atributos y Data-Attributes  - #jonmircha     ********** 
+/* **********     Curso JavaScript: 63. DOM: Atributos y Data-Attributes  - #jonmircha     ********** 
 
 console.log(document.documentElement.lang);
 console.log(document.documentElement.getAttribute("lang"));
@@ -86,7 +86,7 @@ console.log($linkDOM.hasAttribute("data-id"));
 console.log($linkDOM.removeAttribute("data-id"));
 console.log($linkDOM.hasAttribute("data-id"));*/
 
-/* **********     Curso JavaScript: 64. Atributos y Data-Attributes  - #jonmircha     ********** 
+/* **********     Curso JavaScript: 64. DOM: Estilos y Variables CSS  - #jonmircha     ***********
 
 const $linkDOM = document.querySelector(".link-dom");
 console.log($linkDOM.style);
@@ -117,14 +117,14 @@ let varDarkColor = getComputedStyle($html).getPropertyValue("--dark-color"),
 varYellowColor = getComputedStyle($html).getPropertyValue("--yelow-color");
 
 console.log(varDarkColor,varYellowColor);
-
+ 
 $body.style.backgroundColor = varDarkColor;
 $body.style.color = varYellowColor;
 
 $html.style.setProperty("--dark-color","#000");
-varDarkColor = getComputedStyle($html).getPropertyValue("--dark-color");
+ varDarkColor = getComputedStyle($html).getPropertyValue("--dark-color");
 
-$body.style.setProperty("background-color",varDarkColor);*/
+ $body.style.setProperty("background-color",varDarkColor);*/
 
 /* **********     Curso JavaScript: 65. DOM: Clases CSS - #jonmircha     ********** 
 const $card = document.querySelector(".card");
@@ -162,7 +162,7 @@ let text = `
 <p>
   <mark>El DOM no es parte de la especificación de JavaScript, es una API para los navegadores.</mark>
 </p>
-`;
+`;  
 
 $whatIsDom.innerText = text;
 $whatIsDom.textContent = text;
@@ -199,7 +199,7 @@ const $figure = document.createElement("figure"),
 
 $img.setAttribute("src", "https://loremflickr.com/g/320/240/animals");
 $img.setAttribute("alt", "Animals");
-$figure.classList.add("card");
+$figure.classList.add("card");  
 $figcaption.appendChild($figcaptionText);
 $figure.appendChild($img);
 $figure.appendChild($figcaption);
@@ -249,6 +249,7 @@ const meses = [
     "Noviembre",
     "Diciembre",
   ],
+  
   $ul3 = document.createElement("ul");
   $fragment = document.createDocumentFragment();
 
@@ -296,7 +297,7 @@ const $cards = document.querySelector(".cards"),
     $template.querySelector("img").setAttribute("alt", el.title);
     $template.querySelector("figcaption").textContent = el.title;
   
-    let $clone = document.importNode($template, true);
+    let $clone = document.importNode($template, true);  
     fragment.appendChild($clone);
   });
   
@@ -337,6 +338,11 @@ $newCard.classList.add("card");
 const $cards = document.querySelector(".cards"),
   $newCard = document.createElement("figure");
 
+  //$newCard.innerHTML = `
+  //<img src="https://loremflickr.com/g/320/240/any" alt="Any">
+  //<figcaption>Any</figcaption>
+//`;
+
   let $contentCard = `
   <img src="https://loremflickr.com/g/320/240/any" alt="Any">
   <figcaption></figcaption>
@@ -353,12 +359,235 @@ $newCard.querySelector("figcaption").insertAdjacentText("afterbegin","Any");
 $cards.after($newCard);
 */
 
-/* **********     Curso JavaScript: 72. DOM: Manejadores de Eventos - #jonmircha y Curso JavaScript: 73. DOM: Eventos con Parámetros y Remover Eventos - #jonmircha     ********** */
+/* **********     Curso JavaScript: 72. DOM: Manejadores de Eventos - #jonmircha     **********
+function holaMundo(){
+  alert("Hola Mundo");
+  console.log();
+}
+
+const $eventoSemantico = document.getElementById("evento-semantico"),
+$eventoMultiple = document.getElementById("evento-multiple");
 
 
+$eventoSemantico.onclick = holaMundo;
+$eventoSemantico.onclick = function(e) {
+  alert("Hola mundo Manejador de Eventos Semantico");
+  console.log(e);
+  console.log(event);
+} 
 
+$eventoMultiple.addEventListener("click", holaMundo);
+$eventoMultiple.addEventListener("click", (e) => {
+alert("Hola Mundo Manejador de Eventos Multiple");
+console.log(e);
+console.log(e.type);
+console.log(e.target);
+console.log(event);
+});*/
 
+/* **********     Curso JavaScript: 73. DOM: Eventos con Parámetros y Remover Eventos - #jonmircha     **********
+function saludar(nombre = "Desconocid@"){
+  alert(`Hola ${nombre}`);
+  console.log(event);
+}
 
+$eventoMultiple = document.getElementById("evento-multiple");
+$eventoRemover = document.getElementById("evento-remover");
+
+$eventoMultiple.addEventListener("click", () => {
+  saludar("Alfred");
+});
+
+const removerDobleClick = (e) =>{
+  alert(`Removiendo el evento de tipo ${e.type}`);
+  console.log(e);
+  $eventoRemover.removeEventListener("dblclick",removerDobleClick);
+  $eventoRemover.disabled = true;
+}
+
+$eventoRemover.addEventListener("dblclick", removerDobleClick);*/
+
+/* **********     Curso JavaScript: 74. DOM: Flujo de Eventos (Burbuja y Captura) - #jonmircha     ********** 
+
+// Si no se especifica el parámetro boolean, el valor por defecto es false.
+// Si el boolean es falso se ejecuta la fase de burbuja (ir del elemento más interno al más externo <body>)
+// Si el boolean es verdadero se ejecuta la fase de captura (ir del elemento más externo <body> al más interno)
+
+const $divsEventos = document.querySelectorAll(".eventos-flujo div");
+
+function flujoEventos(e) {
+  console.log(
+    `Hola te saluda ${this.className}, el click lo originó ${e.target.className}`
+  );
+}
+
+console.log($divsEventos);
+
+$divsEventos.forEach((div) => {
+  //Fase de burbuja
+  //div.addEventListener("click", flujoEventos);
+  //div.addEventListener("click", flujoEventos, false);
+  //Fase de captura
+  //div.addEventListener("click", flujoEventos, true);
+  div.addEventListener("click", flujoEventos, {
+    capture: false,
+    once: true,//se usa once para que el evento se ejecute una sola vez
+  });
+});*/ 
+
+/* **********     Curso JavaScript: 75. DOM: stopPropagation & preventDefault - #jonmircha     **********
+
+const $divsEventos = document.querySelectorAll(".eventos-flujo div"),
+$linkEventos = document.querySelector(".eventos-flujo a");
+
+function flujoEventos(e) {
+console.log(
+  `Hola te saluda ${this.className}, el click lo originó ${e.target.className}`
+);
+e.stopPropagation();
+}
+
+//console.log($divsEventos);
+
+$divsEventos.forEach((div) => {
+  //Fase de burbuja
+  div.addEventListener("click", flujoEventos);
+  //div.addEventListener("click", flujoEventos, false);
+  //Fase de captura
+  //div.addEventListener("click", flujoEventos, true);
+  //div.addEventListener("click", flujoEventos, {
+    //capture: false,
+    //once: true,
+  //});
+});
+
+$linkEventos.addEventListener("click", (e) => {
+  alert("Hola soy tu amigo y docente digital... Jonathan MirCha");
+  e.preventDefault();
+  e.stopPropagation();
+});*/
+
+/* **********     Curso JavaScript: 76. DOM: Delegación de Eventos - #jonmircha     ********** 
+
+const $divsEventos = document.querySelectorAll(".eventos-flujo div"),
+$linkEventos = document.querySelector(".eventos-flujo a");
+
+function flujoEventos(e) {
+console.log(
+  `Hola te saluda ${this}, el click lo originó ${e.target.className}`
+);
+//e.stopPropagation();
+}
+
+document.addEventListener("click", (e) => {
+  console.log("Clic en ", e.target);
+
+  if (e.target.matches(".eventos-flujo div")) {
+    flujoEventos(e);
+  }
+
+  if (e.target.matches(".eventos-flujo a")) {
+    alert("Hola soy tu amigo y docente digital... Jonathan MirCha");
+    //e.preventDefault();
+    //e.stopPropagation();
+  }
+});*/
+
+/* **********     Curso JavaScript: 77. BOM: Propiedades y Eventos - #jonmircha     ********** 
+
+//El evento DOMContentLoaded es disparado cuando el documento HTML ha sido completamente cargado y parseado, sin esperar hojas de estilo, imágenes y subtramas para finalizar la carga.
+//El evento load se dispara cuando se ha detectado la carga completa de la página.
+// Es un error frecuente usar load cuando DOMContentLoaded es mucho más apropiado.
+
+// Peticiones asíncronas pausan el parseo del DOM.
+window.addEventListener("resize", (e) => {
+console.clear();
+console.log(window.innerWidth);//Referencia al ancho del Viewport de nunestra ventana
+console.log(window.innerHeight);
+console.log(window.outerWidth);//Tamaño de la ventana de nuestro navegador
+console.log(window.outerHeight);
+console.log(window.scrollX);
+console.log(window.scrollY);
+console.log(e);
+})
+
+window.addEventListener("scroll", (e) => {
+  console.clear();
+  console.log("********** Evento Scroll **********");
+  console.log(window.scrollX);
+  console.log(window.scrollY);
+  console.log(e);
+});
+
+window.addEventListener("load", (e) => {
+  console.log("********** Evento Load **********");
+  console.log(window.screenX);
+  console.log(window.screenY);
+  console.log(e);
+});
+
+document.addEventListener("DOMContentLoaded", (e) => {
+  console.log("********** Evento DOMContentLoaded **********");
+  console.log(window.screenX);
+  console.log(window.screenY);
+  console.log(e);
+});*/
+
+/* **********     Curso JavaScript: 78. BOM: Métodos - #jonmircha     ********** 
+window.alert("Alerta");
+window.confirm("Confirmación");
+window.prompt("Aviso");
+
+const $btnAbrir = document.getElementById("abrir-ventana"),
+  $btnCerrar = document.getElementById("cerrar-ventana"),
+  $btnImprimir = document.getElementById("imprimir-ventana");
+
+  let ventana;
+
+  $btnAbrir.addEventListener(
+    "click",
+    (e) => (ventana = window.open("https://jonmircha.com"))
+  );
+  
+  $btnCerrar.addEventListener("click", (e) => {
+    //window.close();
+    ventana.close();
+  });
+  
+  $btnImprimir.addEventListener("click", (e) => window.print());*/
+
+/* **********     Curso JavaScript: 79. BOM: Objetos: URL, Historial y Navegador - #jonmircha     ********** */
+/*console.log("********** Objeto URL (location) **********");
+console.log(location);
+console.log(location.origin);
+console.log(location.protocol);
+console.log(location.host);
+console.log(location.hostname);
+console.log(location.port);
+console.log(location.href);
+console.log(location.hash);
+console.log(location.search);
+console.log(location.pathname);
+//location.reload();//Tener cuidado por que puede desbordar la memoria del navegador
+
+console.log("********** Objeto Historial (history) **********");
+console.log(history);
+console.log(history.length);
+//history.forward(1);
+//history.go(-3);//Hace lo mismo que el back y el forward solo que maneja numeros positivos para ir hacia adelante y numeros negativos para ir hacia atras
+//history.back(2);
+
+console.log("********** Objeto Navegador (navigator) **********");
+console.log(navigator);
+console.log(navigator.connection);
+console.log(navigator.geolocation);
+console.log(navigator.mediaDevices);
+console.log(navigator.mimeTypes);
+console.log(navigator.onLine);
+console.log(navigator.serviceWorker);
+console.log(navigator.storage);
+console.log(navigator.usb);
+console.log(navigator.userAgent);*/   
 
 
 
